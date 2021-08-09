@@ -1,5 +1,11 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
+# My commands section
+commands:
+  print_pipeline_id:
+    description: "An example of command to print the pipeline's id."
+    steps:
+      - run: echo $CIRCLE_WORKFLOW_ID
 # My jobs section
 jobs:
   save_hello_world_output:
@@ -19,6 +25,11 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run: cat /tmp/workspace/output.txt
+  job_to_run_command:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - print_pipeline_id
 
 # Orchestrate or schedule a set of jobs
 workflows:
