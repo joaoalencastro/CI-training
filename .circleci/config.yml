@@ -6,6 +6,7 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
+      - run: mkdir /tmp/workspace && cd /tmp/workspace
       - run: echo "Hello World\n" > output.txt
       - persist_to_workspace:
           root: /tmp/workspace
@@ -16,7 +17,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - attach_workspace:
-          at: /tmp/workspace/output.txt
+          at: /tmp/workspace
       - run: cat output.txt
 
 # Orchestrate or schedule a set of jobs
