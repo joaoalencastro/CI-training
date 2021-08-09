@@ -30,6 +30,15 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - print_pipeline_id
+  test_on_fail_directive:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: echo "This is a test job"
+      - run: return 1
+      - run:
+          command: echo "That did not went well!"
+          when: on_fail
 
 # Orchestrate or schedule a set of jobs
 workflows:
@@ -42,3 +51,4 @@ workflows:
           requires:
             - save_hello_world_output
       - job_to_run_command
+      - test_on_fail_directive
