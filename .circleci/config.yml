@@ -2,26 +2,27 @@
 version: 2.1
 # My jobs section
 jobs:
-  # Creating two jobs named "print_hello" and "print_world"
-  print_hello: 
+  save_hello_world_output:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: echo "hello"
-  print_my_name: 
+      - run: echo "Hello World\n" > output.txt
+      - persist_to_workspace:
+          root: ./
+          paths: output.txt
+  print_output_file:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: 
-          name: "echo an env var that is part of our project"
-          command: |
-            echo $MY_NAME
+      - attach_workspace:
+          at: ./output.txt
+      - run: cat output.txt
+
 # Orchestrate or schedule a set of jobs
 workflows:
   # Name the workflow "welcome"
   welcome:
     # Run the welcome/run job in its own container
     jobs:
-      - print_hello
-      - print_my_name:
-          requires: [print_hello]
+      - save_hello_world_output
+      - print_output_file
